@@ -1,0 +1,17 @@
+{
+  "name": "boardcost",
+  "version": "1.0.0",
+  "description": "Instant cost estimator for corrugated POS display units (FSDUs, CDUs, standees and dump bins).",
+  "main": "js/calculator.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": ["pos", "point-of-sale", "cardboard", "corrugated", "display", "quoting", "estimator"],
+  "author": "Connor",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
