@@ -189,6 +189,64 @@ function quantityDiscountRate(quantity) {
 // ---------------------------------------------------------------------------
 // Quote assembly
 // ---------------------------------------------------------------------------
+
+/**
+ * Build a full quote from a specification.
+ *
+ * Money handling: all intermediate values are kept at full precision and
+ * only rounded once, at the edge of each reported figure. VAT is always
+ * calculated on the discounted order total, never per unit, so the quote
+ * matches what an invoice would actually show (see bug ticket #7).
+ *
+ * @returns quote object with a line-by-line breakdown, all figures in GBP.
+ */
+function calculateQuote(spec) {
+  validateSpec(spec);
+
+  const {
+    displayType, boardGrade, printProcess,
+    lamination = 'none', dieCut = false, includeVat = true, quantity,
+  } = spec;
+
+  const areaM2 = calculateBlankArea(spec);
+
+  const materials = materialCostPerUnit(areaM2, boardGrade) * quantity;
+  const printing = calculatePrintCost(areaM2, printProcess, quantity).total;
+  const finishing = calculateFinishingCost(areaM2, lamination, dieCut, quantity);
+  const assembly = DISPLAY_TYPES[displayType].assemblyCostPerUnit * quantity;
+
+  const productionCost = materials + printing + finishing + assembly;
+  const sellBeforeDiscount = productionCost * (1 + MARGIN_RATE);
+
+  const discountRate = quantityDiscountRate(quantity);
+  const discount = sellBeforeDiscount * discountRate;
+  const netTotal = sellBeforeDiscount - discount;
+  // VAT is worked out per unit and multiplied back up to the order total.
+  const unitNet = netTotal / quantity;
+  const vat = includeVat ? round2(unitNet * VAT_RATE) * quantity : 0;
+  const grandTotal = netTotal + vat;
+
+  return {
+    spec: { ...spec, lamination, dieCut, includeVat },
+    areaM2: Math.round(areaM2 * 10000) / 10000,
+    breakdown: {
+      materials: round2(materials),
+      printing: round2(printing),
+      finishing: round2(finishing),
+      assembly: round2(assembly),
+    },
+    productionCost: round2(productionCost),
+    margin: round2(sellBeforeDiscount - productionCost),
+    discountRate,
+    discount: round2(discount),
+    netTotal: round2(netTotal),
+    vat: round2(vat),
+    grandTotal: round2(grandTotal),
+    unitPrice: round2(grandTotal / quantity),
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Exports — CommonJS for Jest, attached to window for the browser.
 // ---------------------------------------------------------------------------
 
@@ -208,6 +266,7 @@ const api = {
   calculatePrintCost,
   calculateFinishingCost,
   quantityDiscountRate,
+  calculateQuote,
 };
 
 if (typeof module !== 'undefined' && module.exports) {
