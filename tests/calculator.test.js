@@ -13,6 +13,7 @@ const {
   calculatePrintCost,
   calculateFinishingCost,
   quantityDiscountRate,
+  calculateQuote,
   WASTE_FACTOR,
   VAT_RATE,
 } = require('../js/calculator');
@@ -205,3 +206,42 @@ describe('validateSpec', () => {
 
 // ---------------------------------------------------------------------------
 // calculateQuote (integration of the steps above)
+// ---------------------------------------------------------------------------
+
+describe('calculateQuote', () => {
+  test('breakdown lines sum to the production cost', () => {
+    const q = calculateQuote(baseSpec());
+    const sum = q.breakdown.materials + q.breakdown.printing
+      + q.breakdown.finishing + q.breakdown.assembly;
+    expect(sum).toBeCloseTo(q.productionCost, 1);
+  });
+
+  test('net total equals production cost plus margin minus discount', () => {
+    const q = calculateQuote(baseSpec());
+    expect(q.netTotal).toBeCloseTo(q.productionCost + q.margin - q.discount, 1);
+  });
+
+  test('applies the correct quantity discount tier', () => {
+    const q = calculateQuote(baseSpec({ quantity: 250 }));
+    expect(q.discountRate).toBe(0.08);
+    expect(q.discount).toBeGreaterThan(0);
+  });
+
+  test('includeVat: false produces a zero VAT line', () => {
+    const q = calculateQuote(baseSpec({ includeVat: false }));
+    expect(q.vat).toBe(0);
+    expect(q.grandTotal).toBe(q.netTotal);
+  });
+
+  test('unit price is the grand total divided by quantity', () => {
+    const q = calculateQuote(baseSpec());
+    expect(q.unitPrice).toBeCloseTo(q.grandTotal / q.spec.quantity, 2);
+  });
+
+  test('throws (does not return a quote) for an invalid spec', () => {
+    expect(() => calculateQuote(baseSpec({ depthMm: -5 }))).toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// calculatePriceBreaks
