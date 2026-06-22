@@ -1,0 +1,316 @@
+/* BoardCost — styles.
+   Visual identity drawn from the material we work with: kraft board browns,
+   printer's ink navy, and a corrugation "flute" motif in the masthead.
+   Figures are set in a monospace stack for a printed job-ticket feel. */
+
+:root {
+  --kraft: #b3835a;
+  --kraft-dark: #8c6239;
+  --paper: #f7f5f0;
+  --ticket: #fffdf8;
+  --ink: #22303e;
+  --ink-soft: #5a6675;
+  --line: #ddd5c8;
+  --accent: #c34f2a;      /* pallet-marking orange, used sparingly */
+  --ok: #2c6e49;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+/* ---------- Masthead: kraft band with a fluting motif ---------- */
+
+.masthead {
+  background:
+    repeating-linear-gradient(90deg,
+      var(--kraft) 0 14px,
+      var(--kraft-dark) 14px 16px);
+  border-bottom: 4px solid var(--ink);
+  color: #fff;
+}
+
+.masthead-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 28px 20px 22px;
+  background: rgba(34, 48, 62, 0.06);
+}
+
+.wordmark {
+  margin: 0;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.wordmark span { color: #ffe8d9; }
+
+.strap {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+  color: #fdf3e7;
+}
+
+/* ---------- Layout ---------- */
+
+.layout {
+  max-width: 1060px;
+  margin: 28px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: minmax(300px, 420px) 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--ticket);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(34, 48, 62, 0.08);
+}
+
+.panel-title {
+  margin: 0 0 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 8px;
+}
+
+/* ---------- Form ---------- */
+
+.field { margin-bottom: 14px; }
+
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.field input[type="number"],
+.field select {
+  width: 100%;
+  padding: 9px 10px;
+  font-size: 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.dims {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 10px 12px 4px;
+  margin: 0 0 14px;
+}
+
+.dims legend {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0 6px;
+}
+
+.dim-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.checks { display: flex; gap: 18px; flex-wrap: wrap; }
+
+.check {
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid var(--ink);
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: #fff;
+}
+
+.btn-primary:hover { background: #33455a; }
+
+.btn-secondary {
+  margin-top: 16px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.btn-secondary:hover { background: var(--paper); }
+
+.form-error {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  background: #fbeae4;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: #8c2f12;
+  font-size: 0.9rem;
+}
+
+/* ---------- Quote ticket ---------- */
+
+.quote-empty {
+  padding: 18px;
+  border: 1px dashed var(--line);
+  border-radius: 4px;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.quote-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.quote-table th {
+  text-align: left;
+  font-weight: 500;
+  padding: 7px 0;
+  color: var(--ink-soft);
+}
+
+.quote-table td {
+  text-align: right;
+  padding: 7px 0;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.quote-table tr.rule th,
+.quote-table tr.rule td {
+  border-top: 1px solid var(--line);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.quote-table tr.grand th,
+.quote-table tr.grand td {
+  border-top: 2px solid var(--ink);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.quote-table tr.unit td {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 4px;
+}
+
+/* ---------- Price breaks ---------- */
+
+.breaks { margin-top: 26px; }
+
+.breaks h3 {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 8px;
+}
+
+.muted { color: var(--ink-soft); font-weight: 400; text-transform: none; letter-spacing: 0; }
+
+.breaks-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.breaks-table th,
+.breaks-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+}
+
+.breaks-table th:first-child,
+.breaks-table td:first-child { text-align: left; }
+
+.breaks-table thead th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+.breaks-table td {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.breaks-table tr.current { background: #f3ede2; font-weight: 700; }
+
+/* ---------- Footer ---------- */
+
+.footer {
+  max-width: 1060px;
+  margin: 10px auto 40px;
+  padding: 0 20px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+/* ---------- Responsive & motion ---------- */
+
+@media (max-width: 820px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #quote-result { animation: settle 220ms ease-out; }
+  @keyframes settle {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+}

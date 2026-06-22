@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BoardCost — POS display cost estimator</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <h1 class="wordmark">Board<span>Cost</span></h1>
+      <p class="strap">Instant cost estimates for corrugated POS displays</p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ================= Spec form ================= -->
+    <section class="panel spec-panel" aria-labelledby="spec-heading">
+      <h2 id="spec-heading" class="panel-title">Job specification</h2>
+
+      <div class="field">
+        <label for="display-type">Display type</label>
+        <select id="display-type">
+          <option value="fsdu" selected>FSDU (free-standing display unit)</option>
+          <option value="cdu">CDU (counter display unit)</option>
+          <option value="standee">Standee</option>
+          <option value="dump-bin">Dump bin</option>
+        </select>
+      </div>
+
+      <fieldset class="dims">
+        <legend>Dimensions (mm)</legend>
+        <div class="dim-row">
+          <div class="field">
+            <label for="width">Width</label>
+            <input type="number" id="width" min="50" max="2400" value="600">
+          </div>
+          <div class="field">
+            <label for="height">Height</label>
+            <input type="number" id="height" min="50" max="2400" value="1500">
+          </div>
+          <div class="field">
+            <label for="depth">Depth</label>
+            <input type="number" id="depth" min="50" max="2400" value="400">
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="board-grade">Board grade</label>
+        <select id="board-grade">
+          <option value="e-flute">E-flute (1.5mm)</option>
+          <option value="b-flute" selected>B-flute (3mm)</option>
+          <option value="eb-flute">EB double wall (4.5mm)</option>
+          <option value="bc-flute">BC double wall (6mm)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="print-process">Print process</label>
+        <select id="print-process">
+          <option value="digital">Digital</option>
+          <option value="litho-lam" selected>Litho-laminated</option>
+          <option value="flexo">Direct flexo</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="lamination">Lamination</label>
+        <select id="lamination">
+          <option value="none">None</option>
+          <option value="gloss-lam" selected>Gloss lamination</option>
+          <option value="matt-lam">Matt lamination</option>
+        </select>
+      </div>
+
+      <div class="field checks">
+        <label class="check"><input type="checkbox" id="die-cut" checked> Die-cutting</label>
+        <label class="check"><input type="checkbox" id="include-vat" checked> Include VAT (20%)</label>
+      </div>
+
+      <div class="field">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" min="1" max="100000" value="100">
+      </div>
+
+      <button id="calculate" class="btn-primary" type="button">Calculate quote</button>
+      <p id="form-error" class="form-error" role="alert" hidden></p>
+    </section>
+
+    <!-- ================= Quote ticket ================= -->
+    <section class="panel quote-panel" aria-labelledby="quote-heading" aria-live="polite">
+      <h2 id="quote-heading" class="panel-title">Estimate</h2>
+
+      <div id="quote-empty" class="quote-empty">
+        <p>Enter a job spec and press <strong>Calculate quote</strong> to see a full cost breakdown here.</p>
+      </div>
+
+      <div id="quote-result" hidden>
+        <table class="quote-table" aria-label="Cost breakdown">
+          <tbody>
+            <tr><th scope="row">Blank area per unit</th><td id="q-area"></td></tr>
+            <tr><th scope="row">Materials</th><td id="q-materials"></td></tr>
+            <tr><th scope="row">Printing</th><td id="q-printing"></td></tr>
+            <tr><th scope="row">Finishing</th><td id="q-finishing"></td></tr>
+            <tr><th scope="row">Assembly</th><td id="q-assembly"></td></tr>
+            <tr class="rule"><th scope="row">Production cost</th><td id="q-production"></td></tr>
+            <tr><th scope="row">Margin</th><td id="q-margin"></td></tr>
+            <tr><th scope="row">Quantity discount <span id="q-discount-rate" class="tag"></span></th><td id="q-discount"></td></tr>
+            <tr class="rule"><th scope="row">Net total</th><td id="q-net"></td></tr>
+            <tr><th scope="row">VAT</th><td id="q-vat"></td></tr>
+            <tr class="grand"><th scope="row">Grand total</th><td id="q-grand"></td></tr>
+            <tr class="unit"><th scope="row">Unit price</th><td id="q-unit"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>BoardCost uses indicative estimating rates — final pricing is always confirmed by the estimating team. Built as a degree apprenticeship software engineering project.</p>
+  </footer>
+
+  <script src="js/calculator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
