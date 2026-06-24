@@ -14,6 +14,7 @@ const {
   calculateFinishingCost,
   quantityDiscountRate,
   calculateQuote,
+  calculatePriceBreaks,
   WASTE_FACTOR,
   VAT_RATE,
 } = require('../js/calculator');
@@ -245,3 +246,28 @@ describe('calculateQuote', () => {
 
 // ---------------------------------------------------------------------------
 // calculatePriceBreaks
+// ---------------------------------------------------------------------------
+
+describe('calculatePriceBreaks', () => {
+  test('returns a row for each standard tier', () => {
+    const rows = calculatePriceBreaks(baseSpec());
+    expect(rows.map((r) => r.quantity)).toEqual([50, 100, 250, 500, 1000]);
+  });
+
+  test('unit price falls as quantity rises', () => {
+    const rows = calculatePriceBreaks(baseSpec());
+    for (let i = 1; i < rows.length; i += 1) {
+      expect(rows[i].unitPrice).toBeLessThan(rows[i - 1].unitPrice);
+    }
+  });
+
+  test('price break rows are always quoted ex VAT', () => {
+    const rows = calculatePriceBreaks(baseSpec({ includeVat: true }));
+    const direct = calculateQuote(baseSpec({ quantity: 500, includeVat: false }));
+    const row = rows.find((r) => r.quantity === 500);
+    expect(row.netTotal).toBeCloseTo(direct.netTotal, 2);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// buildCsv

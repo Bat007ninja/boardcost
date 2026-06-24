@@ -246,6 +246,23 @@ function calculateQuote(spec) {
   };
 }
 
+/**
+ * Net unit price (ex VAT) at each standard quantity tier, so buyers can
+ * see how price breaks affect their order. Returns one row per tier.
+ */
+function calculatePriceBreaks(spec) {
+  const tiers = [50, 100, 250, 500, 1000];
+  return tiers.map((quantity) => {
+    const quote = calculateQuote({ ...spec, quantity, includeVat: false });
+    return {
+      quantity,
+      discountRate: quote.discountRate,
+      unitPrice: round2(quote.netTotal / quantity),
+      netTotal: quote.netTotal,
+    };
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Exports — CommonJS for Jest, attached to window for the browser.
 // ---------------------------------------------------------------------------
@@ -267,6 +284,7 @@ const api = {
   calculateFinishingCost,
   quantityDiscountRate,
   calculateQuote,
+  calculatePriceBreaks,
 };
 
 if (typeof module !== 'undefined' && module.exports) {

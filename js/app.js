@@ -60,12 +60,31 @@
     el('quote-result').hidden = false;
   }
 
+  function renderPriceBreaks(spec) {
+    const rows = BC.calculatePriceBreaks(spec);
+    const body = el('breaks-body');
+    body.innerHTML = '';
+    rows.forEach((row) => {
+      const tr = document.createElement('tr');
+      if (row.quantity === spec.quantity) tr.classList.add('current');
+      const qty = document.createElement('td');
+      qty.textContent = row.quantity.toLocaleString('en-GB');
+      const disc = document.createElement('td');
+      disc.textContent = `${(row.discountRate * 100).toFixed(0)}%`;
+      const unit = document.createElement('td');
+      unit.textContent = gbp.format(row.unitPrice);
+      tr.append(qty, disc, unit);
+      body.appendChild(tr);
+    });
+  }
+
   function onCalculate() {
     clearError();
     try {
       const spec = readSpec();
       lastQuote = BC.calculateQuote(spec);
       renderQuote(lastQuote);
+      renderPriceBreaks(spec);
     } catch (err) {
       showError(err.message);
     }
