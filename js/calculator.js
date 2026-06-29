@@ -220,11 +220,9 @@ function calculateQuote(spec) {
 
   const discountRate = quantityDiscountRate(quantity);
   const discount = sellBeforeDiscount * discountRate;
-  const netTotal = sellBeforeDiscount - discount;
-  // VAT is worked out per unit and multiplied back up to the order total.
-  const unitNet = netTotal / quantity;
-  const vat = includeVat ? round2(unitNet * VAT_RATE) * quantity : 0;
-  const grandTotal = netTotal + vat;
+  const netTotal = round2(sellBeforeDiscount - discount);
+  const vat = includeVat ? round2(netTotal * VAT_RATE) : 0;
+  const grandTotal = round2(netTotal + vat);
 
   return {
     spec: { ...spec, lamination, dieCut, includeVat },
