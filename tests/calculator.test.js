@@ -228,6 +228,15 @@ describe('calculateQuote', () => {
     expect(q.discount).toBeGreaterThan(0);
   });
 
+  test('regression #7: VAT is calculated on the order total, not per unit', () => {
+    // The original implementation rounded VAT per unit and multiplied up,
+    // which drifted by several pence on odd unit prices. VAT must equal
+    // 20% of the rounded net total to the penny.
+    const q = calculateQuote(baseSpec({ quantity: 137 }));
+    expect(q.vat).toBeCloseTo(round2(q.netTotal * VAT_RATE), 2);
+    expect(q.grandTotal).toBeCloseTo(round2(q.netTotal + q.vat), 2);
+  });
+
   test('includeVat: false produces a zero VAT line', () => {
     const q = calculateQuote(baseSpec({ includeVat: false }));
     expect(q.vat).toBe(0);
