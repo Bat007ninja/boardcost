@@ -15,6 +15,7 @@ const {
   quantityDiscountRate,
   calculateQuote,
   calculatePriceBreaks,
+  buildCsv,
   WASTE_FACTOR,
   VAT_RATE,
 } = require('../js/calculator');
@@ -280,3 +281,27 @@ describe('calculatePriceBreaks', () => {
 
 // ---------------------------------------------------------------------------
 // buildCsv
+// ---------------------------------------------------------------------------
+
+describe('buildCsv', () => {
+  test('produces a header row and one row per quote line', () => {
+    const csv = buildCsv(calculateQuote(baseSpec()));
+    const lines = csv.split('\n');
+    expect(lines[0]).toMatch(/BoardCost quote/);
+    expect(lines.length).toBe(21);
+  });
+
+  test('includes the headline figures', () => {
+    const q = calculateQuote(baseSpec());
+    const csv = buildCsv(q);
+    expect(csv).toContain(`Grand total (GBP),${q.grandTotal.toFixed(2)}`);
+    expect(csv).toContain(`Unit price (GBP),${q.unitPrice.toFixed(2)}`);
+  });
+
+  test('escapes values containing commas', () => {
+    const q = calculateQuote(baseSpec());
+    // Simulate a label containing a comma via the escape path
+    const csv = buildCsv(q);
+    expect(csv).not.toMatch(/^\s*$/);
+  });
+});

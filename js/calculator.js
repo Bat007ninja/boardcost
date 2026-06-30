@@ -262,6 +262,51 @@ function calculatePriceBreaks(spec) {
 }
 
 // ---------------------------------------------------------------------------
+// CSV export
+// ---------------------------------------------------------------------------
+
+/** Escape a value for a CSV cell (quotes anything containing , " or newline). */
+function csvEscape(value) {
+  const text = String(value);
+  if (/[",\n]/.test(text)) {
+    return `"${text.replace(/"/g, '""')}"`;
+  }
+  return text;
+}
+
+/**
+ * Build a CSV document (string) from a quote, suitable for opening in Excel
+ * and attaching to a customer email.
+ */
+function buildCsv(quote) {
+  const { spec, breakdown } = quote;
+  const rows = [
+    ['BoardCost quote', ''],
+    ['Item', 'Value'],
+    ['Display type', DISPLAY_TYPES[spec.displayType].label],
+    ['Dimensions (W x H x D mm)', `${spec.widthMm} x ${spec.heightMm} x ${spec.depthMm}`],
+    ['Board grade', BOARD_GRADES[spec.boardGrade].label],
+    ['Print process', PRINT_PROCESSES[spec.printProcess].label],
+    ['Lamination', LAMINATION[spec.lamination].label],
+    ['Die-cutting', spec.dieCut ? 'Yes' : 'No'],
+    ['Quantity', spec.quantity],
+    ['Materials (GBP)', breakdown.materials.toFixed(2)],
+    ['Printing (GBP)', breakdown.printing.toFixed(2)],
+    ['Finishing (GBP)', breakdown.finishing.toFixed(2)],
+    ['Assembly (GBP)', breakdown.assembly.toFixed(2)],
+    ['Production cost (GBP)', quote.productionCost.toFixed(2)],
+    ['Margin (GBP)', quote.margin.toFixed(2)],
+    ['Quantity discount', `${(quote.discountRate * 100).toFixed(0)}%`],
+    ['Discount (GBP)', quote.discount.toFixed(2)],
+    ['Net total (GBP)', quote.netTotal.toFixed(2)],
+    ['VAT (GBP)', quote.vat.toFixed(2)],
+    ['Grand total (GBP)', quote.grandTotal.toFixed(2)],
+    ['Unit price (GBP)', quote.unitPrice.toFixed(2)],
+  ];
+  return rows.map((row) => row.map(csvEscape).join(',')).join('\n');
+}
+
+// ---------------------------------------------------------------------------
 // Exports — CommonJS for Jest, attached to window for the browser.
 // ---------------------------------------------------------------------------
 
@@ -283,6 +328,7 @@ const api = {
   quantityDiscountRate,
   calculateQuote,
   calculatePriceBreaks,
+  buildCsv,
 };
 
 if (typeof module !== 'undefined' && module.exports) {
