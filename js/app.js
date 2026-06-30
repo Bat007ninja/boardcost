@@ -90,7 +90,23 @@
     }
   }
 
+  function onExportCsv() {
+    if (!lastQuote) return;
+    const csv = BC.buildCsv(lastQuote);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0, 10);
+    link.href = url;
+    link.download = `boardcost-quote-${stamp}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
   el('calculate').addEventListener('click', onCalculate);
+  el('export-csv').addEventListener('click', onExportCsv);
 
   // Recalculate on Enter anywhere in the form.
   document.querySelector('.spec-panel').addEventListener('keydown', (event) => {
