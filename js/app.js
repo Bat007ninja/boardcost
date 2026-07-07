@@ -1,5 +1,5 @@
 /**
- * BoardCost — UI layer.
+ * BoardCost UI layer.
  *
  * This file is deliberately thin: it reads the form, hands a spec object to
  * the pure calculation engine (js/calculator.js), and renders the result.

@@ -1,5 +1,5 @@
 /**
- * BoardCost — core cost calculation engine.
+ * BoardCost core cost calculation engine.
  *
  * All functions in this module are pure (no DOM access, no side effects)
  * so they can be unit tested with Jest in Node and reused by the browser UI.
@@ -307,7 +307,7 @@ function buildCsv(quote) {
 }
 
 // ---------------------------------------------------------------------------
-// Exports — CommonJS for Jest, attached to window for the browser.
+// Exports: CommonJS for Jest, attached to window for the browser.
 // ---------------------------------------------------------------------------
 
 const api = {
