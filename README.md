@@ -1,25 +1,10 @@
-# BoardCost 📦
+# BoardCost
 
 **An instant cost estimator for corrugated POS displays: FSDUs, CDUs, standees and dump bins.**
 
 BoardCost is a single-page web app (HTML, CSS and vanilla JavaScript) that turns a display specification (type, dimensions, board grade, print process, finishing and quantity) into a full, line-by-line cost estimate with quantity price breaks and CSV export. This README documents how it was built: each numbered section below covers one stage of the project, from the initial product proposal through design, planning, test-driven development, CI/CD and a final evaluation.
 
-**Live demo:** [bat007ninja.github.io/boardcost](https://bat007ninja.github.io/boardcost/), deployed via GitHub Pages from `main` · **Tests:** 44 Jest unit tests, run on every push and PR by GitHub Actions.
-
----
-
-## Contents
-
-1. [Product proposal](#1-product-proposal)
-2. [Design and prototyping](#2-design-and-prototyping)
-3. [Project planning and project management tools](#3-project-planning-and-project-management-tools)
-4. [Requirements as issues](#4-requirements-as-issues)
-5. [Building the MVP step by step](#5-building-the-mvp-step-by-step)
-6. [Test Driven Development and CI/CD](#6-test-driven-development-and-cicd)
-7. [Adding features gradually with Git and GitHub](#7-adding-features-gradually-with-git-and-github)
-8. [Documentation](#8-documentation)
-9. [Maintaining the ticketing system](#9-maintaining-the-ticketing-system)
-10. [Evaluation](#10-evaluation)
+**Live demo:** [bat007ninja.github.io/boardcost](https://bat007ninja.github.io/boardcost/), deployed via GitHub Pages from `main`. **Tests:** 44 Jest unit tests, run on every push and PR by GitHub Actions.
 
 ---
 
@@ -200,4 +185,4 @@ The ticketing system stayed live for the whole project rather than being written
 
 ---
 
-*Repository layout, local setup and test instructions: [`docs/TECHNICAL.md`](docs/TECHNICAL.md) · End-user instructions: [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) · Licence: MIT.*
+Repository layout, local setup and test instructions are in `docs/TECHNICAL.md`. End-user instructions are in `docs/USER_GUIDE.md`. Licensed under MIT.
